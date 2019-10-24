@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -21,10 +21,10 @@ public class User {
     private long id;
     
     @NotBlank(message = "Name é obrigatório")
-    @Min(value = 3, message = "O tamanho minimo é de 3")
     private String name;
 
     @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Digite um email válido")
     private String email;
 
     public User() {}

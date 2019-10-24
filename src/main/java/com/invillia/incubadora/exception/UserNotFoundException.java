@@ -9,8 +9,7 @@ package com.invillia.incubadora.exception;
 public class UserNotFoundException extends RuntimeException {
 
     public UserNotFoundException(final String message) {
-        super("Invalid user Id:" + message);
+        super("Usuário não encontrado, ID: " + message);
     }
-
 
 }

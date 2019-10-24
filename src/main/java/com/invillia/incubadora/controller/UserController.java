@@ -1,17 +1,22 @@
 package com.invillia.incubadora.controller;
 
-import javax.validation.Valid;
-
+import com.invillia.incubadora.exception.ActionNotPermitedException;
 import com.invillia.incubadora.exception.UserNotFoundException;
 import com.invillia.incubadora.model.User;
 import com.invillia.incubadora.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * @author s2it_pandrade
@@ -52,7 +57,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(String.valueOf(id)));
+        User user = userRepository.findById(id).orElseThrow(() -> new ActionNotPermitedException(String.valueOf(id)));
         model.addAttribute("user", user);
         return "update-user";
     }
@@ -74,5 +79,10 @@ public class UserController {
         userRepository.delete(user);
         model.addAttribute("users", userRepository.findAll());
         return "index";
+    }
+
+    @ExceptionHandler(ActionNotPermitedException.class)
+    public void exceptionHandler(HttpServletResponse response, Exception e) throws IOException {
+        response.sendError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage());
     }
 }
