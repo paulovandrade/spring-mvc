@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
-    @NotBlank(message = "Name é obrigatório")
+    @NotBlank(message = "Nome é obrigatório")
     private String name;
 
     @NotBlank(message = "Email é obrigatório")
